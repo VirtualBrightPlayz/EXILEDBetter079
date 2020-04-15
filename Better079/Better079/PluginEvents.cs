@@ -1,10 +1,12 @@
 ﻿using EXILED;
 using EXILED.ApiObjects;
 using EXILED.Extensions;
+using Grenades;
 using MEC;
 using Mirror;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Better079
@@ -91,7 +93,8 @@ namespace Better079
                             ev.ReturnMessage = "Abilities/Commands:\n" +
                                 "\".079 a1\" - Teleport to your SCP friends - " + plugin.A2Power + "+ AP - Tier " + (plugin.A1Tier + 1) + "+\n" +
                                 "\".079 a2\" - Activate a memetic in the current room (only on humans) - " + plugin.A2Power + "+ AP - Tier " + (plugin.A2Tier + 1) + "+\n" +
-                                "\".079 a3\" - Shutdown Zone Lighting - " + plugin.A3Power + "+ AP - Tier " + (plugin.A3Tier + 1) + "+\n";
+                                "\".079 a3\" - Shutdown Zone Lighting - " + plugin.A3Power + "+ AP - Tier " + (plugin.A3Tier + 1) + "+\n" +
+                                "\".079 a3\" - Camera Flash (blinds others) - " + plugin.A4Power + "+ AP - Tier " + (plugin.A4Tier + 1) + "+\n";
                             return;
                         }
 
@@ -180,6 +183,34 @@ namespace Better079
                             }
                             Generator079.generators[0].RpcCustomOverchargeForOurBeautifulModCreators(plugin.A3Timer, false);
                             ev.ReturnMessage = "Overcharging...";
+                            return;
+                        }
+
+                        if (args[1].ToLower().Equals("a4"))
+                        {
+                            if (ev.Player.scp079PlayerScript.NetworkcurLvl < plugin.A4Tier)
+                            {
+                                ev.ReturnMessage = "Tier " + (plugin.A4Tier + 1) + "+ Required";
+                                return;
+                            }
+                            if (ev.Player.scp079PlayerScript.NetworkcurMana >= plugin.A4Power)
+                            {
+                                ev.Player.scp079PlayerScript.NetworkcurMana -= plugin.A4Power;
+                            }
+                            else
+                            {
+                                ev.ReturnMessage = "Not enough Power.";
+                                return;
+                            }
+                            var pos = ev.Player.scp079PlayerScript.currentCamera.transform.position;
+                            GrenadeManager gm = ev.Player.GetComponent<GrenadeManager>();
+                            GrenadeSettings settings = gm.availableGrenades.FirstOrDefault(g => g.inventoryID == ItemType.GrenadeFlash);
+                            FlashGrenade flash = GameObject.Instantiate(settings.grenadeInstance).GetComponent<FlashGrenade>();
+                            flash.fuseDuration = 0.5f;
+                            flash.InitData(gm, Vector3.zero, Vector3.zero, 1f);
+                            flash.transform.position = pos;
+                            NetworkServer.Spawn(flash.gameObject);
+                            ev.ReturnMessage = "Flashing...";
                             return;
                         }
                         ev.ReturnMessage = "Invalid. Type \".079 help\" for help.";

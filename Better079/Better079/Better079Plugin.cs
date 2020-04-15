@@ -15,9 +15,11 @@ namespace Better079
         public float A1Power;
         public float A2Power;
         public float A3Power;
-        public float A1Tier;
-        public float A2Tier;
-        public float A3Tier;
+        public float A4Power;
+        public int A1Tier;
+        public int A2Tier;
+        public int A3Tier;
+        public int A4Tier;
         public float A3Timer;
         public int A2Timer;
         public int A2TimerGas;
@@ -41,12 +43,17 @@ namespace Better079
                 return;
             A1MinDist = Config.GetFloat("b079_a1_dist", 15f);
             A1Power = Config.GetFloat("b079_a1_power", 15f);
-            A1Tier = Config.GetFloat("b079_a1_tier", 0);
+            A1Tier = Config.GetInt("b079_a1_tier", 0);
+
+            A4Power = Config.GetFloat("b079_a4_power", 40f);
+            A4Tier = Config.GetInt("b079_a4_tier", 1);
+
             A3Power = Config.GetFloat("b079_a3_power", 100f);
-            A3Tier = Config.GetFloat("b079_a3_tier", 1);
+            A3Tier = Config.GetInt("b079_a3_tier", 1);
             A3Timer = Config.GetFloat("b079_a3_timer", 30f);
+
             A2Power = Config.GetFloat("b079_a2_power", 75f);
-            A2Tier = Config.GetFloat("b079_a2_tier", 2);
+            A2Tier = Config.GetInt("b079_a2_tier", 2);
             A2Timer = Config.GetInt("b079_a2_timer", 5);
             A2TimerGas = Config.GetInt("b079_a2_gas_timer", 10);
             A2Exp = Config.GetFloat("b079_a2_exp", 35f);
