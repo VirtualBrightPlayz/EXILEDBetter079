@@ -94,7 +94,7 @@ namespace Better079
                                 "\".079 a1\" - Teleport to your SCP friends - " + plugin.A2Power + "+ AP - Tier " + (plugin.A1Tier + 1) + "+\n" +
                                 "\".079 a2\" - Activate a memetic in the current room (only on humans) - " + plugin.A2Power + "+ AP - Tier " + (plugin.A2Tier + 1) + "+\n" +
                                 "\".079 a3\" - Shutdown Zone Lighting - " + plugin.A3Power + "+ AP - Tier " + (plugin.A3Tier + 1) + "+\n" +
-                                "\".079 a3\" - Camera Flash (blinds others) - " + plugin.A4Power + "+ AP - Tier " + (plugin.A4Tier + 1) + "+\n";
+                                "\".079 a4\" - Camera Flash (blinds others) - " + plugin.A4Power + "+ AP - Tier " + (plugin.A4Tier + 1) + "+\n";
                             return;
                         }
 
