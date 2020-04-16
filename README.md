@@ -2,7 +2,7 @@
 
 ## Commands
 
-Just type `.079 ?` into the GAME console when you are SCP-079 to show a list of abilities.
+Just type `.079 ?` into the GAME console (`~`) when you are SCP-079 to show a list of abilities.
 
 ## Abilities
 
