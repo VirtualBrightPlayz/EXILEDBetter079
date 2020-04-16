@@ -24,6 +24,8 @@ Flash all who are looking at the camera with a flashbang.
 
 ## Configs
 
+TIERS START AT 0 NOT 1!!!
+
 `b079_enable` - default `false`
 
 
