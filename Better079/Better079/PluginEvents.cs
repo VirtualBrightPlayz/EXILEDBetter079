@@ -84,7 +84,7 @@ namespace Better079
             if (ev.Player.GetRole() == RoleType.Scp079)
             {
                 string[] args = ev.Command.Split(' ');
-                if (args[0].Equals("079"))
+                if (args[0].Equals(plugin.CommandPrefix))
                 {
                     if (args.Length == 2)
                     {
