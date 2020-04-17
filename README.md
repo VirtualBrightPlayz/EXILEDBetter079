@@ -99,3 +99,6 @@ TIERS START AT 0 NOT 1!!!
 `b079_msg_a2_warn` - default `<color=#ff0000>MEMETIC KILL AGENT will activate in this room in $seconds seconds.</color>`
 
 `b079_msg_a2_active` - default `<color=#ff0000>MEMETIC KILL AGENT ACTIVATED.</color>`
+
+
+`b079_spawn_msg` - default `<color=#00ff00>[Better079] Type \".079 help\" in the console for more abilities.</color>`
