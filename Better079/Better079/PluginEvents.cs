@@ -118,7 +118,7 @@ namespace Better079
                             if (cams.Count > 0)
                             {
                                 Camera079 cam = cams[UnityEngine.Random.Range(0, cams.Count)];
-                                ev.Player.scp079PlayerScript.CmdSwitchCamera(cam.cameraId, true);
+                                ev.Player.scp079PlayerScript.CmdSwitchCamera(cam.cameraId, false);
                                 ev.ReturnMessage = plugin.RunA1Msg;
                                 return;
                             }
