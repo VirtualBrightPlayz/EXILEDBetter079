@@ -28,7 +28,7 @@ namespace Better079
         {
             if (ev.Player.GetRole() == RoleType.Scp079)
             {
-                ev.Player.Broadcast(6, "<color=#00ff00>[Better079] Type \".079 help\" in the console for more abilities.</color>", false);
+                ev.Player.Broadcast(10, plugin.SpawnMsg, false);
             }
         }
 
@@ -90,11 +90,11 @@ namespace Better079
                     {
                         if (args[1].ToLower().Equals("help") || args[1].ToLower().Equals("commands") || args[1].ToLower().Equals("?"))
                         {
-                            ev.ReturnMessage = "Abilities/Commands:\n" +
-                                "\".079 a1\" - Teleport to your SCP friends - " + plugin.A2Power + "+ AP - Tier " + (plugin.A1Tier + 1) + "+\n" +
-                                "\".079 a2\" - Activate a memetic in the current room (only on humans) - " + plugin.A2Power + "+ AP - Tier " + (plugin.A2Tier + 1) + "+\n" +
-                                "\".079 a3\" - Shutdown Zone Lighting - " + plugin.A3Power + "+ AP - Tier " + (plugin.A3Tier + 1) + "+\n" +
-                                "\".079 a4\" - Camera Flash (blinds others) - " + plugin.A4Power + "+ AP - Tier " + (plugin.A4Tier + 1) + "+\n";
+                            ev.ReturnMessage = plugin.HelpMsgTitle + "\n" +
+                                "\"." + plugin.CommandPrefix + " a1\" - " + plugin.HelpMsgA1 + " - " + plugin.A2Power + "+ AP - Tier " + (plugin.A1Tier + 1) + "+\n" +
+                                "\"." + plugin.CommandPrefix + " a2\" - " + plugin.HelpMsgA2 + " - " + plugin.A2Power + "+ AP - Tier " + (plugin.A2Tier + 1) + "+\n" +
+                                "\"." + plugin.CommandPrefix + " a3\" - " + plugin.HelpMsgA3 + " - " + plugin.A3Power + "+ AP - Tier " + (plugin.A3Tier + 1) + "+\n" +
+                                "\"." + plugin.CommandPrefix + " a4\" - " + plugin.HelpMsgA4 + " - " + plugin.A4Power + "+ AP - Tier " + (plugin.A4Tier + 1) + "+\n";
                             return;
                         }
 
@@ -102,7 +102,7 @@ namespace Better079
                         {
                             if (ev.Player.scp079PlayerScript.NetworkcurLvl < plugin.A1Tier)
                             {
-                                ev.ReturnMessage = "Tier " + (plugin.A1Tier + 1) + "+ Required";
+                                ev.ReturnMessage = plugin.TierRequiredMsg.Replace("$tier", "" + (plugin.A1Tier + 1));
                                 return;
                             }
                             if (ev.Player.scp079PlayerScript.NetworkcurMana >= plugin.A1Power)
@@ -111,7 +111,7 @@ namespace Better079
                             }
                             else
                             {
-                                ev.ReturnMessage = "Not enough Power.";
+                                ev.ReturnMessage = plugin.NoPowerMsg;
                                 return;
                             }
                             var cams = GetSCPCameras();
@@ -119,12 +119,12 @@ namespace Better079
                             {
                                 Camera079 cam = cams[UnityEngine.Random.Range(0, cams.Count)];
                                 ev.Player.scp079PlayerScript.CmdSwitchCamera(cam.cameraId, true);
-                                ev.ReturnMessage = "Teleporting...";
+                                ev.ReturnMessage = plugin.RunA1Msg;
                                 return;
                             }
                             else
                             {
-                                ev.ReturnMessage = "No SCPs found.";
+                                ev.ReturnMessage = plugin.FailA1Msg;
                                 ev.Player.scp079PlayerScript.NetworkcurMana += plugin.A1Power;
                                 return;
                             }
@@ -134,7 +134,7 @@ namespace Better079
                         {
                             if (ev.Player.scp079PlayerScript.NetworkcurLvl < plugin.A2Tier)
                             {
-                                ev.ReturnMessage = "Tier " + (plugin.A2Tier + 1) + "+ Required";
+                                ev.ReturnMessage = plugin.TierRequiredMsg.Replace("$tier", "" + (plugin.A2Tier + 1));
                                 return;
                             }
                             if (ev.Player.scp079PlayerScript.NetworkcurMana >= plugin.A2Power)
@@ -143,25 +143,25 @@ namespace Better079
                             }
                             else
                             {
-                                ev.ReturnMessage = "Not enough Power.";
+                                ev.ReturnMessage = plugin.NoPowerMsg;
                                 return;
                             }
                             Room room = SCP079Room(ev.Player);
                             if (room == null)
                             {
-                                ev.ReturnMessage = "Memetics don't work here!";
+                                ev.ReturnMessage = plugin.FailA2Msg;
                                 return;
                             }
                             foreach (var item in plugin.A2BlacklistRooms)
                             {
                                 if (room.Name.ToLower().Contains(item.ToLower()))
                                 {
-                                    ev.ReturnMessage = "Memetics don't work here!";
+                                    ev.ReturnMessage = plugin.FailA2Msg;
                                     return;
                                 }
                             }
                             Timing.RunCoroutine(GasRoom(room, ev.Player));
-                            ev.ReturnMessage = "Activating...";
+                            ev.ReturnMessage = plugin.RunA2Msg;
                             return;
                         }
 
@@ -169,7 +169,7 @@ namespace Better079
                         {
                             if (ev.Player.scp079PlayerScript.NetworkcurLvl < plugin.A3Tier)
                             {
-                                ev.ReturnMessage = "Tier " + (plugin.A3Tier + 1) + "+ Required";
+                                ev.ReturnMessage = plugin.TierRequiredMsg.Replace("$tier", "" + (plugin.A3Tier + 1));
                                 return;
                             }
                             if (ev.Player.scp079PlayerScript.NetworkcurMana >= plugin.A3Power)
@@ -178,11 +178,11 @@ namespace Better079
                             }
                             else
                             {
-                                ev.ReturnMessage = "Not enough Power.";
+                                ev.ReturnMessage = plugin.NoPowerMsg;
                                 return;
                             }
                             Generator079.generators[0].RpcCustomOverchargeForOurBeautifulModCreators(plugin.A3Timer, false);
-                            ev.ReturnMessage = "Overcharging...";
+                            ev.ReturnMessage = plugin.RunA3Msg;
                             return;
                         }
 
@@ -190,7 +190,7 @@ namespace Better079
                         {
                             if (ev.Player.scp079PlayerScript.NetworkcurLvl < plugin.A4Tier)
                             {
-                                ev.ReturnMessage = "Tier " + (plugin.A4Tier + 1) + "+ Required";
+                                ev.ReturnMessage = plugin.TierRequiredMsg.Replace("$tier", "" + (plugin.A4Tier + 1));
                                 return;
                             }
                             if (ev.Player.scp079PlayerScript.NetworkcurMana >= plugin.A4Power)
@@ -199,7 +199,7 @@ namespace Better079
                             }
                             else
                             {
-                                ev.ReturnMessage = "Not enough Power.";
+                                ev.ReturnMessage = plugin.NoPowerMsg;
                                 return;
                             }
                             var pos = ev.Player.scp079PlayerScript.currentCamera.transform.position;
@@ -210,13 +210,13 @@ namespace Better079
                             flash.InitData(gm, Vector3.zero, Vector3.zero, 1f);
                             flash.transform.position = pos;
                             NetworkServer.Spawn(flash.gameObject);
-                            ev.ReturnMessage = "Flashing...";
+                            ev.ReturnMessage = plugin.RunA4Msg;
                             return;
                         }
-                        ev.ReturnMessage = "Invalid. Type \".079 help\" for help.";
+                        ev.ReturnMessage = plugin.HelpMsg.Replace("$prefix", "" + plugin.CommandPrefix);
                         return;
                     }
-                    ev.ReturnMessage = "Invalid. Type \".079 help\" for help.";
+                    ev.ReturnMessage = plugin.HelpMsg.Replace("$prefix", "" + plugin.CommandPrefix);
                     return;
                 }
             }
@@ -244,7 +244,7 @@ namespace Better079
                     if (player.GetTeam() != Team.SCP && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
                     {
                         player.ClearBroadcasts();
-                        player.Broadcast(1, "<color=#ff0000>MEMETIC KILL AGENT will activate in this room in " + i + " seconds.</color>", true);
+                        player.Broadcast(1, plugin.A2WarnMsg.Replace("$seconds", "" + i), true);
                         //PlayerManager.localPlayer.GetComponent<MTFRespawn>().RpcPlayCustomAnnouncement(".g3", false, false);
                     }
                 }
@@ -260,7 +260,7 @@ namespace Better079
                 var player = ply.GetPlayer();
                 if (player.GetTeam() != Team.SCP && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
                 {
-                    player.Broadcast(5, "<color=#ff0000>MEMETIC KILL AGENT ACTIVATED.</color>", true);
+                    player.Broadcast(5, plugin.A2ActiveMsg, true);
                 }
             }
             for (int i = 0; i < plugin.A2TimerGas * 2; i++)
