@@ -152,6 +152,11 @@ namespace Better079
                                 ev.ReturnMessage = plugin.FailA2Msg;
                                 return;
                             }
+                            if (room.Zone == ZoneType.Surface || room.Zone == ZoneType.Unspecified)
+                            {
+                                ev.ReturnMessage = plugin.FailA2Msg;
+                                return;
+                            }
                             foreach (var item in plugin.A2BlacklistRooms)
                             {
                                 if (room.Name.ToLower().Contains(item.ToLower()))
