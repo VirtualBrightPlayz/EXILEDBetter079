@@ -152,7 +152,7 @@ namespace Better079
                                 ev.ReturnMessage = plugin.FailA2Msg;
                                 return;
                             }
-                            if (room.Zone == ZoneType.Surface || room.Zone == ZoneType.Unspecified)
+                            if (room.Zone == ZoneType.Surface)
                             {
                                 ev.ReturnMessage = plugin.FailA2Msg;
                                 return;
