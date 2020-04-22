@@ -91,7 +91,7 @@ namespace Better079
                         if (args[1].ToLower().Equals("help") || args[1].ToLower().Equals("commands") || args[1].ToLower().Equals("?"))
                         {
                             ev.ReturnMessage = plugin.HelpMsgTitle + "\n" +
-                                "\"." + plugin.CommandPrefix + " a1\" - " + plugin.HelpMsgA1 + " - " + plugin.A2Power + "+ AP - Tier " + (plugin.A1Tier + 1) + "+\n" +
+                                "\"." + plugin.CommandPrefix + " a1\" - " + plugin.HelpMsgA1 + " - " + plugin.A1Power + "+ AP - Tier " + (plugin.A1Tier + 1) + "+\n" +
                                 "\"." + plugin.CommandPrefix + " a2\" - " + plugin.HelpMsgA2 + " - " + plugin.A2Power + "+ AP - Tier " + (plugin.A2Tier + 1) + "+\n" +
                                 "\"." + plugin.CommandPrefix + " a3\" - " + plugin.HelpMsgA3 + " - " + plugin.A3Power + "+ AP - Tier " + (plugin.A3Tier + 1) + "+\n" +
                                 "\"." + plugin.CommandPrefix + " a4\" - " + plugin.HelpMsgA4 + " - " + plugin.A4Power + "+ AP - Tier " + (plugin.A4Tier + 1) + "+\n";
