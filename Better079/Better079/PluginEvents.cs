@@ -227,7 +227,7 @@ namespace Better079
             }
         }
 
-        private IEnumerator<float> GasRoom(Room room, ReferenceHub scp)
+private IEnumerator<float> GasRoom(Room room, ReferenceHub scp)
         {
             string str = ".g4 ";
             for (int i = plugin.A2Timer; i > 0f; i--)
@@ -246,7 +246,7 @@ namespace Better079
                 foreach (var ply in PlayerManager.players)
                 {
                     var player = ply.GetPlayer();
-                    if (player.GetTeam() != Team.SCP && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
+                    if (plugin.A2ScpDmg ? true : player.GetTeam() != Team.SCP && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
                     {
                         player.ClearBroadcasts();
                         player.Broadcast(1, plugin.A2WarnMsg.Replace("$seconds", "" + i), true);
@@ -263,7 +263,7 @@ namespace Better079
             foreach (var ply in PlayerManager.players)
             {
                 var player = ply.GetPlayer();
-                if (player.GetTeam() != Team.SCP && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
+                if (plugin.A2ScpDmg ? true : player.GetTeam() != Team.SCP && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
                 {
                     player.Broadcast(5, plugin.A2ActiveMsg, true);
                 }
@@ -273,7 +273,7 @@ namespace Better079
                 foreach (var ply in PlayerManager.players)
                 {
                     var player = ply.GetPlayer();
-                    if (player.GetTeam() != Team.SCP && player.GetRole() != RoleType.Spectator && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
+                    if (plugin.A2ScpDmg ? true : player.GetTeam() != Team.SCP && player.GetRole() != RoleType.Spectator && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
                     {
                         player.playerStats.HurtPlayer(new PlayerStats.HitInfo(10f, "WORLD", DamageTypes.Decont, 0), player.gameObject);
                         if (player.GetRole() == RoleType.Spectator)
