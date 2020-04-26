@@ -26,6 +26,7 @@ namespace Better079
         public float A2Exp;
         public float A1MinDist;
         public List<string> A2BlacklistRooms;
+        public bool A2ScpDmg;
 
         public string CommandPrefix;
         public string HelpMsgTitle;
@@ -84,6 +85,7 @@ namespace Better079
             {
                 A2BlacklistRooms = new List<string>();
             }
+            A2ScpDmg = Config.GetBool("b079_a2_scpdmg", false);
 
 
             CommandPrefix = Config.GetString("b079_prefix", "079").Replace(' ', '_');
