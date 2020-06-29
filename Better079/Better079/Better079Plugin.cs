@@ -25,6 +25,8 @@ namespace Better079
         public int A2TimerGas;
         public float A2Exp;
         public float A1MinDist;
+        public float A2Cooldown;
+        public bool A2DisableCassie;
         public List<string> A2BlacklistRooms;
 
         public string CommandPrefix;
@@ -51,7 +53,7 @@ namespace Better079
 
         public override void OnDisable()
         {
-            if (!Config.GetBool("b079_enable"))
+            if (!Config.GetBool("b079_enable", true))
                 return;
             Events.RoundStartEvent -= PLEV.RoundStart;
             Events.PlayerSpawnEvent -= PLEV.PlayerSpawn;
@@ -61,7 +63,7 @@ namespace Better079
 
         public override void OnEnable()
         {
-            if (!Config.GetBool("b079_enable"))
+            if (!Config.GetBool("b079_enable", true))
                 return;
             A1MinDist = Config.GetFloat("b079_a1_dist", 15f);
             A1Power = Config.GetFloat("b079_a1_power", 15f);
@@ -79,7 +81,9 @@ namespace Better079
             A2Timer = Config.GetInt("b079_a2_timer", 5);
             A2TimerGas = Config.GetInt("b079_a2_gas_timer", 10);
             A2Exp = Config.GetFloat("b079_a2_exp", 35f);
+            A2Cooldown = Config.GetFloat("b079_a2_cooldown", 60f);
             A2BlacklistRooms = Config.GetStringList("b079_a2_blacklisted_rooms");
+            A2DisableCassie = Config.GetBool("b079_a2_disable_cassie", false);
             if (A2BlacklistRooms == null)
             {
                 A2BlacklistRooms = new List<string>();

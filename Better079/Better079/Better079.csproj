@@ -32,28 +32,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\exiledlibs\0Harmony.dll</HintPath>
+      <HintPath>..\..\..\exiled10libs\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\exiledlibs\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\exiled10libs\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\exiledlibs\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\..\..\exiled10libs\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="EXILED">
-      <HintPath>..\..\..\exiledlibs\EXILED.dll</HintPath>
+      <HintPath>..\..\..\exiled10libs\EXILED.dll</HintPath>
     </Reference>
     <Reference Include="EXILED_Events">
-      <HintPath>..\..\..\exiledlibs\EXILED_Events.dll</HintPath>
-    </Reference>
-    <Reference Include="EXILED_Idler">
-      <HintPath>..\..\..\exiledlibs\EXILED_Idler.dll</HintPath>
+      <HintPath>..\..\..\exiled10libs\EXILED_Events.dll</HintPath>
     </Reference>
     <Reference Include="EXILED_Permissions">
-      <HintPath>..\..\..\exiledlibs\EXILED_Permissions.dll</HintPath>
+      <HintPath>..\..\..\exiled10libs\EXILED_Permissions.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
-      <HintPath>..\..\..\exiledlibs\Mirror.dll</HintPath>
+      <HintPath>..\..\..\exiled10libs\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -64,16 +61,16 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\exiledlibs\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\exiled10libs\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\exiledlibs\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\exiled10libs\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\exiledlibs\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>..\..\..\exiled10libs\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="YamlDotNet">
-      <HintPath>..\..\..\exiledlibs\YamlDotNet.dll</HintPath>
+      <HintPath>..\..\..\exiled10libs\YamlDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

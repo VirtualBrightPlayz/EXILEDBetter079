@@ -2,6 +2,7 @@
 using EXILED.ApiObjects;
 using EXILED.Extensions;
 using Grenades;
+using Hints;
 using MEC;
 using Mirror;
 using System;
@@ -14,6 +15,7 @@ namespace Better079
     public class PluginEvents
     {
         private Better079Plugin plugin;
+        private float a2cooldown = 0f;
 
         public PluginEvents(Better079Plugin better079Plugin)
         {
@@ -22,13 +24,18 @@ namespace Better079
 
         internal void RoundStart()
         {
+            a2cooldown = 0f;
         }
 
         internal void PlayerSpawn(PlayerSpawnEvent ev)
         {
             if (ev.Player.GetRole() == RoleType.Scp079)
             {
-                ev.Player.Broadcast(10, plugin.SpawnMsg, false);
+                ev.Player.hints.Show(new TextHint(plugin.SpawnMsg, new HintParameter[] { new StringHintParameter("") }, new HintEffect[]
+                {
+                    HintEffectPresets.TrailingPulseAlpha(0.5f, 1f, 0.5f, 2f, 0f, 3)
+                }, 10f));
+                //ev.Player.Broadcast(10, plugin.SpawnMsg, false);
             }
         }
 
@@ -146,14 +153,22 @@ namespace Better079
                                 ev.ReturnMessage = plugin.NoPowerMsg;
                                 return;
                             }
+                            if (Time.timeSinceLevelLoad - a2cooldown < plugin.A2Cooldown)
+                            {
+                                ev.Player.scp079PlayerScript.NetworkcurMana += plugin.A2Power;
+                                ev.ReturnMessage = plugin.FailA2Msg;
+                                return;
+                            }
                             Room room = SCP079Room(ev.Player);
                             if (room == null)
                             {
+                                ev.Player.scp079PlayerScript.NetworkcurMana += plugin.A2Power;
                                 ev.ReturnMessage = plugin.FailA2Msg;
                                 return;
                             }
                             if (room.Zone == ZoneType.Surface)
                             {
+                                ev.Player.scp079PlayerScript.NetworkcurMana += plugin.A2Power;
                                 ev.ReturnMessage = plugin.FailA2Msg;
                                 return;
                             }
@@ -161,6 +176,7 @@ namespace Better079
                             {
                                 if (room.Name.ToLower().Contains(item.ToLower()))
                                 {
+                                    ev.Player.scp079PlayerScript.NetworkcurMana += plugin.A2Power;
                                     ev.ReturnMessage = plugin.FailA2Msg;
                                     return;
                                 }
@@ -186,7 +202,7 @@ namespace Better079
                                 ev.ReturnMessage = plugin.NoPowerMsg;
                                 return;
                             }
-                            Generator079.generators[0].RpcCustomOverchargeForOurBeautifulModCreators(plugin.A3Timer, false);
+                            Generator079.Generators[0].RpcCustomOverchargeForOurBeautifulModCreators(plugin.A3Timer, false);
                             ev.ReturnMessage = plugin.RunA3Msg;
                             return;
                         }
@@ -229,12 +245,16 @@ namespace Better079
 
         private IEnumerator<float> GasRoom(Room room, ReferenceHub scp)
         {
-            string str = ".g4 ";
-            for (int i = plugin.A2Timer; i > 0f; i--)
+            a2cooldown = Time.timeSinceLevelLoad;
+            if (!plugin.A2DisableCassie)
             {
-                str += ". .g4 ";
+                string str = ".g4 ";
+                for (int i = plugin.A2Timer; i > 0f; i--)
+                {
+                    str += ". .g4 ";
+                }
+                PlayerManager.localPlayer.GetComponent<MTFRespawn>().RpcPlayCustomAnnouncement(str, false, false);
             }
-            PlayerManager.localPlayer.GetComponent<MTFRespawn>().RpcPlayCustomAnnouncement(str, false, false);
             List<Door> doors = Map.Doors.FindAll((d) => Vector3.Distance(d.transform.position, room.Position) <= 20f);
             foreach (var item in doors)
             {
@@ -248,8 +268,12 @@ namespace Better079
                     var player = ply.GetPlayer();
                     if (player.GetTeam() != Team.SCP && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
                     {
-                        player.ClearBroadcasts();
-                        player.Broadcast(1, plugin.A2WarnMsg.Replace("$seconds", "" + i), true);
+                        player.hints.Show(new TextHint(plugin.A2WarnMsg.Replace("$seconds", "" + i), new HintParameter[] { new StringHintParameter("") }, new HintEffect[]
+                        {
+                            HintEffectPresets.TrailingPulseAlpha(0.5f, 1f, 0.5f, 2f, 0f, 3)
+                        }, 1f));
+                        //player.ClearBroadcasts();
+                        //player.Broadcast(1, plugin.A2WarnMsg.Replace("$seconds", "" + i), true);
                         //PlayerManager.localPlayer.GetComponent<MTFRespawn>().RpcPlayCustomAnnouncement(".g3", false, false);
                     }
                 }
@@ -265,7 +289,10 @@ namespace Better079
                 var player = ply.GetPlayer();
                 if (player.GetTeam() != Team.SCP && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
                 {
-                    player.Broadcast(5, plugin.A2ActiveMsg, true);
+                    player.hints.Show(new TextHint(plugin.A2ActiveMsg, new HintParameter[] { new StringHintParameter("") }, new HintEffect[]
+                    {
+                        HintEffectPresets.TrailingPulseAlpha(0.5f, 1f, 0.5f, 2f, 0f, 3)
+                    }, 5f));
                 }
             }
             for (int i = 0; i < plugin.A2TimerGas * 2; i++)
