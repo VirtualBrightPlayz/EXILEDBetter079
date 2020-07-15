@@ -1,10 +1,12 @@
-﻿using EXILED;
-using EXILED.ApiObjects;
-using EXILED.Extensions;
+﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Exiled.Events.EventArgs;
 using Grenades;
 using Hints;
 using MEC;
 using Mirror;
+using Respawning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +17,7 @@ namespace Better079
     public class PluginEvents
     {
         private Better079Plugin plugin;
-        private float a2cooldown = 0f;
+        internal static float a2cooldown = 0f;
 
         public PluginEvents(Better079Plugin better079Plugin)
         {
@@ -27,11 +29,11 @@ namespace Better079
             a2cooldown = 0f;
         }
 
-        internal void PlayerSpawn(PlayerSpawnEvent ev)
+        internal void PlayerSpawn(SpawningEventArgs ev)
         {
-            if (ev.Player.GetRole() == RoleType.Scp079)
+            if (ev.Player.Role == RoleType.Scp079)
             {
-                ev.Player.hints.Show(new TextHint(plugin.SpawnMsg, new HintParameter[] { new StringHintParameter("") }, new HintEffect[]
+                ev.Player.ReferenceHub.hints.Show(new TextHint(Better079Plugin.instance.Config.b079_spawn_msg, new HintParameter[] { new StringHintParameter("") }, new HintEffect[]
                 {
                     HintEffectPresets.TrailingPulseAlpha(0.5f, 1f, 0.5f, 2f, 0f, 3)
                 }, 10f));
@@ -39,17 +41,17 @@ namespace Better079
             }
         }
 
-        internal List<Camera079> GetSCPCameras()
+        public static List<Camera079> GetSCPCameras()
         {
             var list = GameObject.FindObjectsOfType<Camera079>();
             List<Camera079> cams = new List<Camera079>();
             foreach (var ply in PlayerManager.players)
             {
-                if (ply.GetPlayer().GetTeam() == Team.SCP && ply.GetPlayer().GetRole() != RoleType.Scp079)
+                if (ply.GetComponent<ReferenceHub>().characterClassManager.CurRole.team == Team.SCP && ply.GetComponent<ReferenceHub>().characterClassManager.NetworkCurClass != RoleType.Scp079)
                 {
                     foreach (var cam in list)
                     {
-                        if (Vector3.Distance(cam.transform.position, ply.transform.position) <= plugin.A1MinDist)
+                        if (Vector3.Distance(cam.transform.position, ply.transform.position) <= Better079Plugin.instance.Config.b079_a1_dist)
                         {
                             cams.Add(cam);
                         }
@@ -60,7 +62,7 @@ namespace Better079
         }
 
         // https://github.com/galaxy119/EXILED/blob/master/EXILED_Main/Extensions/Player.cs
-        internal Room SCP079Room(ReferenceHub player)
+        public static Room SCP079Room(ReferenceHub player)
         {
             Vector3 playerPos = player.scp079PlayerScript.currentCamera.transform.position;
             Vector3 end = playerPos - new Vector3(0f, 10f, 0f);
@@ -78,15 +80,10 @@ namespace Better079
                 if (room.Position == transform.position)
                     return room;
 
-            return new Room
-            {
-                Name = transform.name,
-                Position = transform.position,
-                Transform = transform
-            };
+            return new Room(transform.name, transform, transform.position);
         }
 
-        internal void ConsoleCmd(ConsoleCommandEvent ev)
+        /*internal void ConsoleCmd(ConsoleCommandEvent ev)
         {
             if (ev.Player.GetRole() == RoleType.Scp079)
             {
@@ -241,19 +238,19 @@ namespace Better079
                     return;
                 }
             }
-        }
+        }*/
 
-        private IEnumerator<float> GasRoom(Room room, ReferenceHub scp)
+        public static IEnumerator<float> GasRoom(Room room, ReferenceHub scp)
         {
             a2cooldown = Time.timeSinceLevelLoad;
-            if (!plugin.A2DisableCassie)
+            if (!Better079Plugin.instance.Config.b079_a2_disable_cassie)
             {
                 string str = ".g4 ";
-                for (int i = plugin.A2Timer; i > 0f; i--)
+                for (int i = Better079Plugin.instance.Config.b079_a2_timer; i > 0f; i--)
                 {
                     str += ". .g4 ";
                 }
-                PlayerManager.localPlayer.GetComponent<MTFRespawn>().RpcPlayCustomAnnouncement(str, false, false);
+                RespawnEffectsController.PlayCassieAnnouncement(str, false, false);
             }
             List<Door> doors = Map.Doors.FindAll((d) => Vector3.Distance(d.transform.position, room.Position) <= 20f);
             foreach (var item in doors)
@@ -261,14 +258,14 @@ namespace Better079
                 item.NetworkisOpen = true;
                 item.Networklocked = true;
             }
-            for (int i = plugin.A2Timer; i > 0f; i--)
+            for (int i = Better079Plugin.instance.Config.b079_a2_timer; i > 0f; i--)
             {
                 foreach (var ply in PlayerManager.players)
                 {
-                    var player = ply.GetPlayer();
-                    if (player.GetTeam() != Team.SCP && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
+                    var player = new Player(ply);
+                    if (player.Team != Team.SCP && player.CurrentRoom != null && player.CurrentRoom.Transform == room.Transform)
                     {
-                        player.hints.Show(new TextHint(plugin.A2WarnMsg.Replace("$seconds", "" + i), new HintParameter[] { new StringHintParameter("") }, new HintEffect[]
+                        player.ReferenceHub.hints.Show(new TextHint(Better079Plugin.instance.Config.b079_msg_a2_warn.Replace("$seconds", "" + i), new HintParameter[] { new StringHintParameter("") }, new HintEffect[]
                         {
                             HintEffectPresets.TrailingPulseAlpha(0.5f, 1f, 0.5f, 2f, 0f, 3)
                         }, 1f));
@@ -286,26 +283,26 @@ namespace Better079
             }
             foreach (var ply in PlayerManager.players)
             {
-                var player = ply.GetPlayer();
-                if (player.GetTeam() != Team.SCP && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
+                var player = new Player(ply);
+                if (player.Team != Team.SCP && player.CurrentRoom != null && player.CurrentRoom.Transform == room.Transform)
                 {
-                    player.hints.Show(new TextHint(plugin.A2ActiveMsg, new HintParameter[] { new StringHintParameter("") }, new HintEffect[]
+                    player.ReferenceHub.hints.Show(new TextHint(Better079Plugin.instance.Config.b079_msg_a2_active, new HintParameter[] { new StringHintParameter("") }, new HintEffect[]
                     {
                         HintEffectPresets.TrailingPulseAlpha(0.5f, 1f, 0.5f, 2f, 0f, 3)
                     }, 5f));
                 }
             }
-            for (int i = 0; i < plugin.A2TimerGas * 2; i++)
+            for (int i = 0; i < Better079Plugin.instance.Config.b079_a2_gas_timer * 2; i++)
             {
                 foreach (var ply in PlayerManager.players)
                 {
-                    var player = ply.GetPlayer();
-                    if (player.GetTeam() != Team.SCP && player.GetRole() != RoleType.Spectator && player.GetCurrentRoom() != null && player.GetCurrentRoom().Transform == room.Transform)
+                    var player = new Player(ply);
+                    if (player.Team != Team.SCP && player.Role != RoleType.Spectator && player.CurrentRoom != null && player.CurrentRoom.Transform == room.Transform)
                     {
-                        player.playerStats.HurtPlayer(new PlayerStats.HitInfo(10f, "WORLD", DamageTypes.Decont, 0), player.gameObject);
-                        if (player.GetRole() == RoleType.Spectator)
+                        player.ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(10f, "WORLD", DamageTypes.Decont, 0), player.ReferenceHub.gameObject);
+                        if (player.Role == RoleType.Spectator)
                         {
-                            scp.scp079PlayerScript.AddExperience(plugin.A2Exp);
+                            scp.scp079PlayerScript.AddExperience(Better079Plugin.instance.Config.b079_a2_exp);
                         }
                     }
                 }
