@@ -20,6 +20,7 @@ namespace Better079
         public string Command => "079";
 
         public string[] Aliases => new string[] { Better079Plugin.instance.Config.b079_prefix };
+        //public string[] Aliases => new string[0];
 
         public string Description => "SCP-079";
 
@@ -82,7 +83,7 @@ namespace Better079
                                 if (plr.RH.scp079PlayerScript.NetworkcurLvl < plugin.Config.b079_a2_tier)
                                 {
                                     response = plugin.Config.b079_msg_tier_required.Replace("$tier", "" + (plugin.Config.b079_a2_tier + 1));
-                                    return false;
+                                    return true;
                                 }
                                 if (plr.RH.scp079PlayerScript.NetworkcurMana >= plugin.Config.b079_a2_power)
                                 {
