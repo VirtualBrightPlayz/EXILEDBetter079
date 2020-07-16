@@ -16,6 +16,8 @@ namespace Better079
         public static Better079Plugin instance;
 
         public override string Name => "Better079";
+        public override string Author => "VirtualBrightPlayz";
+        public override Version Version => new Version(1, 2, 0);
         public PluginEvents PLEV;
 
         public override void OnDisabled()
