@@ -252,7 +252,7 @@ namespace Better079
                 }
                 RespawnEffectsController.PlayCassieAnnouncement(str, false, false);
             }
-            List<Door> doors = Map.Doors.FindAll((d) => Vector3.Distance(d.transform.position, room.Position) <= 20f);
+            List<Door> doors = Map.Doors.Where((d) => Vector3.Distance(d.transform.position, room.Position) <= 20f).ToList();
             foreach (var item in doors)
             {
                 item.NetworkisOpen = true;
