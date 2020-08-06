@@ -143,7 +143,7 @@ namespace Better079
                                     response = plugin.Config.b079_msg_no_power;
                                     return true;
                                 }
-                                Generator079.Generators[0].RpcCustomOverchargeForOurBeautifulModCreators(plugin.Config.b079_a3_timer, false);
+                                Generator079.Generators[0].ServerOvercharge(plugin.Config.b079_a3_timer, false);
                                 response = plugin.Config.b079_msg_a3_run;
                                 return true;
                             }
