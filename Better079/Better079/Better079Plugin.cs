@@ -24,6 +24,8 @@ namespace Better079
         {
             Exiled.Events.Handlers.Server.RoundStarted -= PLEV.RoundStart;
             Exiled.Events.Handlers.Player.Spawning -= PLEV.PlayerSpawn;
+            Exiled.Events.Handlers.Server.SendingConsoleCommand -= PLEV.ConsoleCmd;
+            Exiled.Events.Handlers.Scp079.GainingExperience -= PLEV.ExpGain;
             PLEV = null;
             instance = null;
         }
@@ -34,6 +36,8 @@ namespace Better079
             PLEV = new PluginEvents(this);
             Exiled.Events.Handlers.Server.RoundStarted += PLEV.RoundStart;
             Exiled.Events.Handlers.Player.Spawning += PLEV.PlayerSpawn;
+            Exiled.Events.Handlers.Server.SendingConsoleCommand += PLEV.ConsoleCmd;
+            Exiled.Events.Handlers.Scp079.GainingExperience += PLEV.ExpGain;
         }
     }
 }
