@@ -61,6 +61,15 @@ namespace Better079
             return cams;
         }
 
+        public void ExpGain(GainingExperienceEventArgs ev)
+        {
+            if (plugin.Config.xpboost) return;
+
+            foreach (ExpGainType gainType in plugin.Config.experienceGain.Keys)
+                if (gainType == ev.GainType)
+                    ev.Amount += plugin.Config.experienceGain[gainType];
+        }
+
         // https://github.com/galaxy119/EXILED/blob/master/EXILED_Main/Extensions/Player.cs
         public static Room SCP079Room(ReferenceHub player)
         {
