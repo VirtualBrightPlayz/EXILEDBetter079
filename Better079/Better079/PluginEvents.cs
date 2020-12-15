@@ -79,8 +79,8 @@ namespace Better079
             foreach (Room room in Map.Rooms)
                 if (room.Position == transform.position)
                     return room;
-
-            return new Room(transform.name, transform, transform.position);
+            return null;
+            //return new Room(transform.name, transform, transform.position);
         }
 
         /*internal void ConsoleCmd(ConsoleCommandEvent ev)

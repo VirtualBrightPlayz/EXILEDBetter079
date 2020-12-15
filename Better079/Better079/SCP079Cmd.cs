@@ -29,7 +29,7 @@ namespace Better079
             if (sender is PlayerCommandSender)
             {
                 var plr = sender as PlayerCommandSender;
-                if (plr.RH.characterClassManager.NetworkCurClass == RoleType.Scp079)
+                if (plr.ReferenceHub.characterClassManager.NetworkCurClass == RoleType.Scp079)
                 {
                     var plugin = Better079Plugin.instance;
                     var args = arguments.Array;
@@ -48,14 +48,14 @@ namespace Better079
 
                             if (args[1].ToLower().Equals("a1"))
                             {
-                                if (plr.RH.scp079PlayerScript.NetworkcurLvl < plugin.Config.b079_a1_tier)
+                                if (plr.ReferenceHub.scp079PlayerScript.NetworkcurLvl < plugin.Config.b079_a1_tier)
                                 {
                                     response = plugin.Config.b079_msg_tier_required.Replace("$tier", "" + (plugin.Config.b079_a1_tier + 1));
                                     return true;
                                 }
-                                if (plr.RH.scp079PlayerScript.NetworkcurMana >= plugin.Config.b079_a1_power)
+                                if (plr.ReferenceHub.scp079PlayerScript.NetworkcurMana >= plugin.Config.b079_a1_power)
                                 {
-                                    plr.RH.scp079PlayerScript.NetworkcurMana -= plugin.Config.b079_a1_power;
+                                    plr.ReferenceHub.scp079PlayerScript.NetworkcurMana -= plugin.Config.b079_a1_power;
                                 }
                                 else
                                 {
@@ -66,13 +66,13 @@ namespace Better079
                                 if (cams.Count > 0)
                                 {
                                     Camera079 cam = cams[UnityEngine.Random.Range(0, cams.Count)];
-                                    plr.RH.scp079PlayerScript.CmdSwitchCamera(cam.cameraId, false);
+                                    plr.ReferenceHub.scp079PlayerScript.CmdSwitchCamera(cam.cameraId, false);
                                     response = plugin.Config.b079_msg_a1_run;
                                     return true;
                                 }
                                 else
                                 {
-                                    plr.RH.scp079PlayerScript.NetworkcurMana += plugin.Config.b079_a1_power;
+                                    plr.ReferenceHub.scp079PlayerScript.NetworkcurMana += plugin.Config.b079_a1_power;
                                     response = plugin.Config.b079_msg_a1_fail;
                                     return true;
                                 }
@@ -80,14 +80,14 @@ namespace Better079
 
                             if (args[1].ToLower().Equals("a2"))
                             {
-                                if (plr.RH.scp079PlayerScript.NetworkcurLvl < plugin.Config.b079_a2_tier)
+                                if (plr.ReferenceHub.scp079PlayerScript.NetworkcurLvl < plugin.Config.b079_a2_tier)
                                 {
                                     response = plugin.Config.b079_msg_tier_required.Replace("$tier", "" + (plugin.Config.b079_a2_tier + 1));
                                     return true;
                                 }
-                                if (plr.RH.scp079PlayerScript.NetworkcurMana >= plugin.Config.b079_a2_power)
+                                if (plr.ReferenceHub.scp079PlayerScript.NetworkcurMana >= plugin.Config.b079_a2_power)
                                 {
-                                    plr.RH.scp079PlayerScript.NetworkcurMana -= plugin.Config.b079_a2_power;
+                                    plr.ReferenceHub.scp079PlayerScript.NetworkcurMana -= plugin.Config.b079_a2_power;
                                 }
                                 else
                                 {
@@ -96,20 +96,20 @@ namespace Better079
                                 }
                                 if (Time.timeSinceLevelLoad - PluginEvents.a2cooldown < plugin.Config.b079_a2_cooldown)
                                 {
-                                    plr.RH.scp079PlayerScript.NetworkcurMana += plugin.Config.b079_a2_power;
+                                    plr.ReferenceHub.scp079PlayerScript.NetworkcurMana += plugin.Config.b079_a2_power;
                                     response = plugin.Config.b079_msg_a2_fail;
                                     return true;
                                 }
-                                Room room = PluginEvents.SCP079Room(plr.RH);
+                                Room room = PluginEvents.SCP079Room(plr.ReferenceHub);
                                 if (room == null)
                                 {
-                                    plr.RH.scp079PlayerScript.NetworkcurMana += plugin.Config.b079_a2_power;
+                                    plr.ReferenceHub.scp079PlayerScript.NetworkcurMana += plugin.Config.b079_a2_power;
                                     response = plugin.Config.b079_msg_a2_fail;
                                     return true;
                                 }
                                 if (room.Zone == ZoneType.Surface)
                                 {
-                                    plr.RH.scp079PlayerScript.NetworkcurMana += plugin.Config.b079_a2_power;
+                                    plr.ReferenceHub.scp079PlayerScript.NetworkcurMana += plugin.Config.b079_a2_power;
                                     response = plugin.Config.b079_msg_a2_fail;
                                     return true;
                                 }
@@ -117,26 +117,26 @@ namespace Better079
                                 {
                                     if (room.Name.ToLower().Contains(item.ToLower()))
                                     {
-                                        plr.RH.scp079PlayerScript.NetworkcurMana += plugin.Config.b079_a2_power;
+                                        plr.ReferenceHub.scp079PlayerScript.NetworkcurMana += plugin.Config.b079_a2_power;
                                         response = plugin.Config.b079_msg_a2_fail;
                                         return true;
                                     }
                                 }
-                                Timing.RunCoroutine(PluginEvents.GasRoom(room, plr.RH));
+                                Timing.RunCoroutine(PluginEvents.GasRoom(room, plr.ReferenceHub));
                                 response = plugin.Config.b079_msg_a2_run;
                                 return true;
                             }
 
                             if (args[1].ToLower().Equals("a3"))
                             {
-                                if (plr.RH.scp079PlayerScript.NetworkcurLvl < plugin.Config.b079_a3_tier)
+                                if (plr.ReferenceHub.scp079PlayerScript.NetworkcurLvl < plugin.Config.b079_a3_tier)
                                 {
                                     response = plugin.Config.b079_msg_tier_required.Replace("$tier", "" + (plugin.Config.b079_a3_tier + 1));
                                     return true;
                                 }
-                                if (plr.RH.scp079PlayerScript.NetworkcurMana >= plugin.Config.b079_a3_power)
+                                if (plr.ReferenceHub.scp079PlayerScript.NetworkcurMana >= plugin.Config.b079_a3_power)
                                 {
-                                    plr.RH.scp079PlayerScript.NetworkcurMana -= plugin.Config.b079_a3_power;
+                                    plr.ReferenceHub.scp079PlayerScript.NetworkcurMana -= plugin.Config.b079_a3_power;
                                 }
                                 else
                                 {
@@ -150,22 +150,22 @@ namespace Better079
 
                             if (args[1].ToLower().Equals("a4"))
                             {
-                                if (plr.RH.scp079PlayerScript.NetworkcurLvl < plugin.Config.b079_a4_tier)
+                                if (plr.ReferenceHub.scp079PlayerScript.NetworkcurLvl < plugin.Config.b079_a4_tier)
                                 {
                                     response = plugin.Config.b079_msg_tier_required.Replace("$tier", "" + (plugin.Config.b079_a4_tier + 1));
                                     return true;
                                 }
-                                if (plr.RH.scp079PlayerScript.NetworkcurMana >= plugin.Config.b079_a4_power)
+                                if (plr.ReferenceHub.scp079PlayerScript.NetworkcurMana >= plugin.Config.b079_a4_power)
                                 {
-                                    plr.RH.scp079PlayerScript.NetworkcurMana -= plugin.Config.b079_a4_power;
+                                    plr.ReferenceHub.scp079PlayerScript.NetworkcurMana -= plugin.Config.b079_a4_power;
                                 }
                                 else
                                 {
                                     response = plugin.Config.b079_msg_no_power;
                                     return true;
                                 }
-                                var pos = plr.RH.scp079PlayerScript.currentCamera.transform.position;
-                                GrenadeManager gm = plr.RH.GetComponent<GrenadeManager>();
+                                var pos = plr.ReferenceHub.scp079PlayerScript.currentCamera.transform.position;
+                                GrenadeManager gm = plr.ReferenceHub.GetComponent<GrenadeManager>();
                                 GrenadeSettings settings = gm.availableGrenades.FirstOrDefault(g => g.inventoryID == ItemType.GrenadeFlash);
                                 FlashGrenade flash = GameObject.Instantiate(settings.grenadeInstance).GetComponent<FlashGrenade>();
                                 flash.fuseDuration = 0.5f;
